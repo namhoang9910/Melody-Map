@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,10 +56,60 @@ public class ExploreFragment extends Fragment {
         }
     }
 
+
+    private Button nearByButton;
+    private Button genreButton;
+    private Button freeEventsButton;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_explore, container, false);
+
+        nearByButton = rootView.findViewById(R.id.nearByButton);
+        genreButton = rootView.findViewById(R.id.genreButton);
+        freeEventsButton = rootView.findViewById(R.id.freeEventsButton);
+
+        // Set onClickListeners for nearByButton
+        nearByButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Select nearByButton
+                nearByButton.setSelected(true);
+                // Deselect genreButton and freeEventsButton
+                genreButton.setSelected(false);
+                freeEventsButton.setSelected(false);
+                // Perform any other actions for nearByButton
+            }
+        });
+
+        // Set onClickListeners for genreButton
+        genreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Select genreButton
+                genreButton.setSelected(true);
+                // Deselect nearByButton and freeEventsButton
+                nearByButton.setSelected(false);
+                freeEventsButton.setSelected(false);
+                // Perform any other actions for genreButton
+            }
+        });
+
+        // Set onClickListeners for freeEventsButton
+        freeEventsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Select freeEventsButton
+                freeEventsButton.setSelected(true);
+                // Deselect nearByButton and genreButton
+                nearByButton.setSelected(false);
+                genreButton.setSelected(false);
+                // Perform any other actions for freeEventsButton
+            }
+        });
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_explore, container, false);
+        return rootView;
     }
 }

@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import com.example.melodymap.R;
 
 import com.example.melodymap.databinding.ActivityMainBinding;
 
@@ -27,20 +28,6 @@ public class MainActivity extends AppCompatActivity {
         replaceFragment(new ExploreFragment());
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-            /*switch (item.getItemId()) {
-                case R.id.explore:
-                    replaceFragment(new ExploreFragment());
-                    break;
-                case R.id.myEvents:
-                    replaceFragment(new MyEventsFragment());
-                    break;
-                case R.id.inbox:
-                    replaceFragment(new InboxFragment());
-                    break;
-                case R.id.account:
-                    replaceFragment(new AccountFragment());
-                    break;
-            }*/
             int itemId = item.getItemId();
             if (itemId == R.id.explore) {
                 replaceFragment(new ExploreFragment());
