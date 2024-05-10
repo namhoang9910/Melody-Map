@@ -82,6 +82,7 @@ public class ExploreFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+        nearByButton.performClick();
 
         // Inflate the layout for this fragment
         return rootView;

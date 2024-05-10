@@ -56,11 +56,10 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.play.services.maps)
     //implementation(libs.play.services.location)
-    //implementation(libs.fragment)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    //implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.karumi:dexter:6.2.3")
 }
 
