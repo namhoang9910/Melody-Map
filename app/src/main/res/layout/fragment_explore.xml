@@ -21,7 +21,10 @@
                 android:id="@+id/searchView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="15dp"
                 android:autofillHints="Live Music for you..."
                 android:background="@drawable/search_view_background"
                 android:iconifiedByDefault="false"
@@ -33,8 +36,8 @@
                 android:id="@+id/filterBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
                 android:layout_marginBottom="15dp"
                 android:orientation="horizontal">
 
@@ -81,9 +84,9 @@
             android:id="@+id/mapAndFeed"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="30dp"
             android:layout_marginTop="0dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginRight="30dp"
             android:layout_marginBottom="15dp"
             android:layout_weight="5"
             app:cardBackgroundColor="@color/black"
@@ -99,20 +102,25 @@
 
         </androidx.cardview.widget.CardView>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/recyclerCardView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="7" />
+            android:layout_marginLeft="17dp"
+            android:layout_marginRight="15dp"
+            android:layout_weight="7"
+            android:backgroundTint="@color/black"
+            app:cardCornerRadius="10dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/eventRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_weight="7"
+                android:nestedScrollingEnabled="false" />
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="EXPLORE"
-        android:textColor="@color/white"
-        android:textSize="24sp" />
 
 </FrameLayout>
