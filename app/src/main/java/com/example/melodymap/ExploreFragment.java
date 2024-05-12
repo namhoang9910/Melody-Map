@@ -109,15 +109,6 @@ public class ExploreFragment extends Fragment implements OnMapReadyCallback {
         // Firebase
         db = FirebaseFirestore.getInstance();
 
-        /*// The hard-coded way
-        EventModel melbourneEvent1a = new EventModel("Event 1a: 80's Synth Pop", "May 11, 2024", "This is a jazz event",
-                "Club Retro", 10, R.drawable.club_retro, -37.81241686315203, 144.96188789533943);
-        EventModel melbourneEvent2a = new EventModel("Event 2a: Pop Rock Party", "May 12, 2024", "An exciting music night",
-                "Vibras Club", 0, R.drawable.vibras_club, -37.811083452388935, 144.97043719678723);
-
-        eventModels.add(melbourneEvent1a);
-        eventModels.add(melbourneEvent2a);*/
-
         // The easy way
         db.collection("events")
                 .get()
