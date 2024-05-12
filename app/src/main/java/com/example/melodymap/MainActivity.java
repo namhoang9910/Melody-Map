@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     static final String PERMISSION_GRANTED_KEY = "isPermissionGranted";
     boolean isPermissionGranted = false;
     ActivityMainBinding binding;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

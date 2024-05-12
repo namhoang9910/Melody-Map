@@ -13,6 +13,9 @@ secretsGradlePlugin = "2.0.1"
 googleServices = "4.4.1"
 firebaseDatabase = "21.0.0"
 firebaseFirestore = "25.0.0"
+firebaseCrashlytics = "19.0.0"
+gradle = "8.1.0"
+firebaseCrashlyticsGradle = "3.0.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -27,6 +30,9 @@ secrets-gradle-plugin = { module = "com.google.android.libraries.mapsplatform.se
 google-services = { group = "com.google.gms", name = "google-services", version.ref = "googleServices" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebaseCrashlytics" }
+gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle" }
+firebase-crashlytics-gradle = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "firebaseCrashlyticsGradle" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

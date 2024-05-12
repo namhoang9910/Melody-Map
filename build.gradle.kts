@@ -7,6 +7,8 @@ buildscript {
         classpath(libs.secrets.gradle.plugin)
         classpath(libs.google.services)
         classpath ("com.google.gms:google-services:4.4.1")
+        classpath(libs.gradle)
+        classpath(libs.firebase.crashlytics.gradle)
     }
 }
 
