@@ -9,7 +9,6 @@ public class Venue {
     private GeoPoint location;
     private String name;
     private String openingHours;
-    private String ownerName;
     private String phoneNumber;
 
     public Venue() {}
@@ -20,7 +19,6 @@ public class Venue {
         this.location = location;
         this.name = name;
         this.openingHours = openingHours;
-        this.ownerName = ownerName;
         this.phoneNumber = phoneNumber;
     }
 
@@ -62,12 +60,6 @@ public class Venue {
         this.openingHours = openingHours;
     }
 
-    public String getOwnerName() {
-        return ownerName;
-    }
-    public void setOwnerName(String ownerName) {
-        this.ownerName = ownerName;
-    }
 
     public String getPhoneNumber() {
         return phoneNumber;
