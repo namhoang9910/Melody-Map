@@ -11,9 +11,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.Timestamp;
+import com.squareup.picasso.Picasso;
+
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Event_RecyclerViewAdapter extends RecyclerView.Adapter<Event_RecyclerViewAdapter.MyViewHolder> {
     Context context;
@@ -35,17 +40,29 @@ public class Event_RecyclerViewAdapter extends RecyclerView.Adapter<Event_Recycl
 
     @Override
     public void onBindViewHolder(@NonNull Event_RecyclerViewAdapter.MyViewHolder holder, int position) {
-        // binding process as it comes back to us when scrolling
-        holder.imageView.setImageResource(eventModels.get(position).getImage());
-        holder.eventName_tv.setText(eventModels.get(position).getEventName());
-        holder.eventDate_tv.setText(eventModels.get(position).getEventDate());
 
-        // For int
+        holder.eventName_tv.setText(eventModels.get(position).getEventName());
+
+        // Format imageUrl (string)
+        String imageUrl = eventModels.get(position).getImageUrl();
+        Picasso.get().load(imageUrl)
+                .placeholder(R.drawable.placeholder_image)
+                .error(R.drawable.error_image)
+                .into(holder.imageView);
+
+        // Format date (Timestamp)
+        Timestamp eventDate = eventModels.get(position).getEventDate();
+        Date date = eventDate.toDate();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd - HH:mm");
+        String dateString = dateFormat.format(date);
+        holder.eventDate_tv.setText(dateString);
+
+        // Format price (double)
         double eventPrice = eventModels.get(position).getEventPrice();
         if (eventPrice == 0) {
-            holder.eventPrice_tv.setText("Free"); // Set text to "Free" if price is 0
+            holder.eventPrice_tv.setText("Free");
         } else {
-            holder.eventPrice_tv.setText("$" + eventPrice); // Otherwise, concatenate $ with the price string
+            holder.eventPrice_tv.setText("$" + eventPrice);
         }
     }
 

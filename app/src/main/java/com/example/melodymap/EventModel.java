@@ -1,28 +1,32 @@
 package com.example.melodymap;
 
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.GeoPoint;
+
 public class EventModel {
-    String eventName, eventDate, eventDescription, eventHost;
-    int image;
+    String eventName, eventDescription, eventHost, eventGenre, imageUrl;
+    Timestamp eventDate;
     double eventPrice, eventLat, eventLong;
+    GeoPoint eventGeoPoint;
 
 
-    public EventModel(String eventName, String eventDate, String eventDescription, String eventHost,
-                      double eventPrice, int image, double eventLat, double eventLong) {
+    public EventModel(String eventName, Timestamp eventDate, String eventDescription, String eventHost, String eventGenre,
+                      double eventPrice, String imageUrl, GeoPoint eventGeoPoint) {
         this.eventName = eventName;
         this.eventDate = eventDate;
         this.eventDescription = eventDescription;
         this.eventHost = eventHost;
+        this.eventGenre = eventGenre;
         this.eventPrice = eventPrice;
-        this.image = image;
-        this.eventLat = eventLat;
-        this.eventLong = eventLong;
+        this.imageUrl = imageUrl;
+        this.eventGeoPoint = eventGeoPoint;
     }
 
     public String getEventName() {
         return eventName;
     }
 
-    public String getEventDate() {
+    public Timestamp getEventDate() {
         return eventDate;
     }
 
@@ -34,19 +38,36 @@ public class EventModel {
         return eventHost;
     }
 
+    public String getEventGenre() {
+        return eventGenre;
+    }
     public double getEventPrice() {
         return eventPrice;
     }
 
-    public int getImage() {
-        return image;
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public GeoPoint getEventGeoPoint() {
+        return eventGeoPoint;
     }
 
     public double getEventLat() {
-        return eventLat;
+        if (eventGeoPoint != null) {
+            return eventGeoPoint.getLatitude();
+        } else {
+            return 0.0; // Or handle null case as per your requirement
+        }
     }
 
+    // Method to get longitude
     public double getEventLong() {
-        return eventLong;
+        if (eventGeoPoint != null) {
+            return eventGeoPoint.getLongitude();
+        } else {
+            return 0.0; // Or handle null case as per your requirement
+        }
     }
+
 }

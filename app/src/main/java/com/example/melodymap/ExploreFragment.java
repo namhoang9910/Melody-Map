@@ -1,11 +1,15 @@
 package com.example.melodymap;
 
+import static android.content.ContentValues.TAG;
+
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +21,16 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
+
+import java.util.Date;
+
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -26,6 +39,7 @@ public class ExploreFragment extends Fragment implements OnMapReadyCallback {
     FirebaseFirestore db;
     // Temporary hard-coding data to test out RecyclerView
     // To-do: connect to Firebase
+    RecyclerView recyclerView;
     ArrayList<EventModel> eventModels = new ArrayList<>();
 
     @Override
@@ -95,13 +109,58 @@ public class ExploreFragment extends Fragment implements OnMapReadyCallback {
         // Firebase
         db = FirebaseFirestore.getInstance();
 
-        // To be removed: hardcoded database
-        RecyclerView recyclerView = rootView.findViewById(R.id.eventRecyclerView);
-        setUpEventModel();
-        Event_RecyclerViewAdapter adapter = new Event_RecyclerViewAdapter(getActivity(),
-                eventModels);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        /*// The hard-coded way
+        EventModel melbourneEvent1a = new EventModel("Event 1a: 80's Synth Pop", "May 11, 2024", "This is a jazz event",
+                "Club Retro", 10, R.drawable.club_retro, -37.81241686315203, 144.96188789533943);
+        EventModel melbourneEvent2a = new EventModel("Event 2a: Pop Rock Party", "May 12, 2024", "An exciting music night",
+                "Vibras Club", 0, R.drawable.vibras_club, -37.811083452388935, 144.97043719678723);
+
+        eventModels.add(melbourneEvent1a);
+        eventModels.add(melbourneEvent2a);*/
+
+        // The easy way
+        db.collection("events")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String eventName = document.getString("eventName");
+                                Timestamp eventDate = document.getTimestamp("eventDate");
+                                String eventDescription = document.getString("eventDescription");
+                                String eventHost = document.getString("eventHost");
+                                String eventGenre = document.getString("eventGenre");
+                                String imageUrl = document.getString("imageUrl");
+
+                                GeoPoint eventLocation = document.getGeoPoint("location");
+
+                                Double eventPriceDouble = document.getDouble("eventPrice");
+                                double eventPrice = eventPriceDouble != null ? eventPriceDouble : 0.0;
+
+                                // Handle potential null values for eventLat and eventLong
+                                Double eventLatDouble = document.getDouble("eventLat");
+                                double eventLat = eventLatDouble != null ? eventLatDouble : 0.0;
+
+                                Double eventLongDouble = document.getDouble("eventLong");
+                                double eventLong = eventLongDouble != null ? eventLongDouble : 0.0;
+
+                                // Create an EventModel object and add it to the list
+                                EventModel event1 = new EventModel(eventName, eventDate, eventDescription,
+                                        eventHost, eventGenre, eventPrice, imageUrl, eventLocation);
+                                eventModels.add(event1);
+                            }
+                            // Data from firebase doesn't exist outside onComplete
+                            RecyclerView recyclerView = rootView.findViewById(R.id.eventRecyclerView);
+                            Event_RecyclerViewAdapter adapter = new Event_RecyclerViewAdapter(getActivity(), eventModels);
+                            recyclerView.setAdapter(adapter);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });
 
         // Inflate the layout for this fragment
         return rootView;
@@ -114,38 +173,5 @@ public class ExploreFragment extends Fragment implements OnMapReadyCallback {
         LatLng melbourneCBD = new LatLng(-37.8136, 144.9631); // Melbourne CBD coordinates
         googleMap.addMarker(new MarkerOptions().position(melbourneCBD).title("MelbourneCBD"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(melbourneCBD, 13)); // Zoom level 12
-    }
-
-    // Hard-coded, to be removed
-    public void setUpEventModel() {
-        EventModel melbourneEvent1a = new EventModel("Event 1a: 80's Synth Pop", "May 11, 2024", "This is a jazz event",
-                "Club Retro", 10, R.drawable.club_retro, -37.81241686315203, 144.96188789533943);
-        EventModel melbourneEvent2a = new EventModel("Event 2a: Pop Rock Party", "May 12, 2024", "An exciting music night",
-                "Vibras Club", 0, R.drawable.vibras_club, -37.811083452388935, 144.97043719678723);
-        EventModel melbourneEvent3a = new EventModel("Event 3a: Beyonce Tribute", "May 13, 2024", "Party! YOLO!!",
-                "Sub Club", 25.99, R.drawable.sub_club, -37.81716909251318, 144.96580233995357);
-        EventModel melbourneEvent1b = new EventModel("Event 1b: 70's Synth Pop", "May 21, 2024", "This is a jazz event",
-                "Club Retro", 10, R.drawable.club_retro, -37.81241686315203, 144.96188789533943);
-        EventModel melbourneEvent2b = new EventModel("Event 2b: Rock Party", "May 22, 2024", "An exciting music night",
-                "Vibras Club", 39.99, R.drawable.vibras_club, -37.811083452388935, 144.97043719678723);
-        EventModel melbourneEvent3b = new EventModel("Event 3b: Michael Jackson Tribute", "May 23, 2024", "Party! YOLO!!",
-                "Sub Club", 0, R.drawable.sub_club, -37.81716909251318, 144.96580233995357);
-        EventModel melbourneEvent2c = new EventModel("Event 2c: Party", "May 29, 2024", "An exciting music night",
-                "Vibras Club", 39.99, R.drawable.vibras_club, -37.811083452388935, 144.97043719678723);
-        EventModel melbourneEvent2d = new EventModel("Event 2d: Party", "May 29, 2024", "An exciting music night",
-                "Vibras Club", 0, R.drawable.vibras_club, -37.811083452388935, 144.97043719678723);
-        EventModel melbourneEvent2e = new EventModel("Event 2e: Party", "May 29, 2024", "An exciting music night",
-                "Vibras Club", 39.99, R.drawable.vibras_club, -37.811083452388935, 144.97043719678723);
-
-        eventModels.add(melbourneEvent1a);
-        eventModels.add(melbourneEvent2a);
-        eventModels.add(melbourneEvent3a);
-        eventModels.add(melbourneEvent1b);
-        eventModels.add(melbourneEvent2b);
-        eventModels.add(melbourneEvent3b);
-        eventModels.add(melbourneEvent2c);
-        eventModels.add(melbourneEvent2d);
-        eventModels.add(melbourneEvent2e);
-
     }
 }
