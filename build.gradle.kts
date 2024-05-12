@@ -6,7 +6,7 @@ buildscript {
     dependencies {
         classpath(libs.secrets.gradle.plugin)
         classpath(libs.google.services)
-        classpath ("com.google.gms:google-services:4.3.15")
+        classpath ("com.google.gms:google-services:4.4.1")
     }
 }
 
