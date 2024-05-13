@@ -42,26 +42,26 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/nearByButton"
+                    android:id="@+id/allEventsButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/filter_button_background"
                     android:includeFontPadding="true"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:text="Near by"
+                    android:text="All Events"
                     android:textAllCaps="false"
                     android:textColor="@color/filter_button_text_color" />
 
                 <Button
-                    android:id="@+id/genreButton"
+                    android:id="@+id/nearByButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:background="@drawable/filter_button_background"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:text="Genre"
+                    android:text="Near By"
                     android:textAllCaps="false"
                     android:textColor="@color/filter_button_text_color" />
 
@@ -108,7 +108,7 @@
             android:layout_height="0dp"
             android:layout_marginLeft="17dp"
             android:layout_marginRight="15dp"
-            android:layout_weight="7"
+            android:layout_weight="5"
             android:backgroundTint="@color/black"
             app:cardCornerRadius="10dp">
 
@@ -117,7 +117,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:layout_weight="7"
                 android:nestedScrollingEnabled="false" />
         </androidx.cardview.widget.CardView>
 

@@ -24,8 +24,8 @@
 
             <ImageView
                 android:id="@+id/eventImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:padding="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -37,10 +37,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:text="Event Name"
                 android:textColor="@color/white"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/eventImage"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -50,10 +50,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:text="Event Date"
                 android:textColor="@color/mediumGrey"
-                android:textSize="15sp"
+                android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/eventImage"
                 app:layout_constraintTop_toBottomOf="@+id/eventName" />
 
@@ -64,7 +64,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="Event Price"
                 android:textColor="@color/white"
-                android:textSize="15sp"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/eventImage"
                 app:layout_constraintTop_toBottomOf="@+id/eventDate" />

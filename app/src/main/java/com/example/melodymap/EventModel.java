@@ -62,7 +62,7 @@ public class EventModel {
     }
 
     // Method to get longitude
-    public double getEventLong() {
+    public double getEventLng() {
         if (eventGeoPoint != null) {
             return eventGeoPoint.getLongitude();
         } else {
