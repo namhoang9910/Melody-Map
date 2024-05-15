@@ -2,6 +2,7 @@ package com.example.melodymap;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,7 +46,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class ExploreFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
+public class ExploreFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, RecyclerViewInterface {
     private View rootView;
     RecyclerView recyclerView;
     GoogleMap googleMap;
@@ -125,6 +127,8 @@ public class ExploreFragment extends Fragment implements OnMapReadyCallback, Goo
 
         allEventsButton.performClick();
 
+        ExploreFragment fragment = this;
+
         // Firebase
         db = FirebaseFirestore.getInstance();
         db.collection("events")
@@ -160,7 +164,7 @@ public class ExploreFragment extends Fragment implements OnMapReadyCallback, Goo
                             }
                             // Data from firebase doesn't exist outside onComplete
                             recyclerView = rootView.findViewById(R.id.eventRecyclerView);
-                            adapter = new Event_RecyclerViewAdapter(getActivity(), eventModels);
+                            adapter = new Event_RecyclerViewAdapter(getActivity(), eventModels, fragment);
                             recyclerView.setAdapter(adapter);
                             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                 @Override
@@ -205,9 +209,10 @@ public class ExploreFragment extends Fragment implements OnMapReadyCallback, Goo
         for (EventModel event : eventModels) {
             boolean isNearby = nearByButton.isSelected() && calculateDistance(MELBOURNE_CBD, new LatLng(event.getEventLat(), event.getEventLng())) <= NEARBY_DISTANCE_DIAMETER_KM;
             boolean isFree = freeEventsButton.isSelected() && event.getEventPrice() == 0.0;
-            boolean matchesSearch = event.getEventName().toLowerCase().contains(text.toLowerCase());
+            boolean headingMatchesSearch = event.getEventName().toLowerCase().contains(text.toLowerCase());
+            boolean genreMatchesSearch = event.getEventGenre().toLowerCase().contains(text.toLowerCase());
 
-            if ((isNearby || !nearByButton.isSelected()) && (isFree || !freeEventsButton.isSelected()) && matchesSearch) {
+            if ((isNearby || !nearByButton.isSelected()) && (isFree || !freeEventsButton.isSelected()) && (headingMatchesSearch || genreMatchesSearch)) {
                 filteredList.add(event);
             }
         }
@@ -371,6 +376,25 @@ public class ExploreFragment extends Fragment implements OnMapReadyCallback, Goo
         // Move the camera to show all markers within the bounds
         googleMap.moveCamera(cameraUpdate);
     }
+
+    @Override
+    public void onItemClick(int position) {
+        // When item from RecyclerViewInterface is clicked, show event info
+        Intent intent = new Intent(getActivity(), EventInfoActivity.class);
+
+        // Pass necessary data to the activity using Intent extras
+        intent.putExtra("EVENT_NAME", eventModels.get(position).getEventName());
+        intent.putExtra("EVENT_PRICE", eventModels.get(position).getEventPrice());
+        intent.putExtra("IMAGE_URL", eventModels.get(position).getImageUrl());
+        intent.putExtra("EVENT_HOST", eventModels.get(position).getEventHost());
+        intent.putExtra("EVENT_DATE", eventModels.get(position).getEventDate());
+        intent.putExtra("EVENT_GENRE", eventModels.get(position).getEventGenre());
+        intent.putExtra("EVENT_DESCRIPTION", eventModels.get(position).getEventDescription());
+
+
+        startActivity(intent);
+    }
+
 
     private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         private final View mWindow;

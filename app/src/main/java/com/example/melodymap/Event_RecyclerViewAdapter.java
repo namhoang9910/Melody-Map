@@ -21,12 +21,15 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Event_RecyclerViewAdapter extends RecyclerView.Adapter<Event_RecyclerViewAdapter.MyViewHolder> {
+    private final RecyclerViewInterface recyclerViewInterface;
     Context context;
     ArrayList<EventModel> eventModels;
 
-    public Event_RecyclerViewAdapter(Context context, ArrayList<EventModel> eventModels) {
+    public Event_RecyclerViewAdapter(Context context, ArrayList<EventModel> eventModels,
+                                     RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
         this.eventModels = eventModels;
+        this.recyclerViewInterface = recyclerViewInterface;
     }
 
     public void setFilteredList(ArrayList<EventModel> filteredList) {
@@ -40,7 +43,7 @@ public class Event_RecyclerViewAdapter extends RecyclerView.Adapter<Event_Recycl
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.recycler_view_row, parent, false);
 
-        return new Event_RecyclerViewAdapter.MyViewHolder(view);
+        return new Event_RecyclerViewAdapter.MyViewHolder(view, recyclerViewInterface);
     }
 
     @Override
@@ -53,6 +56,8 @@ public class Event_RecyclerViewAdapter extends RecyclerView.Adapter<Event_Recycl
         Picasso.get().load(imageUrl)
                 .placeholder(R.drawable.placeholder_image)
                 .error(R.drawable.error_image)
+                .fit()
+                .centerCrop()
                 .into(holder.imageView);
 
         // Format date (Timestamp)
@@ -81,7 +86,7 @@ public class Event_RecyclerViewAdapter extends RecyclerView.Adapter<Event_Recycl
         // similar to onCreate
         ImageView imageView;
         TextView eventName_tv, eventDate_tv, eventPrice_tv;
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
 
             imageView = itemView.findViewById(R.id.eventImage);
@@ -89,7 +94,18 @@ public class Event_RecyclerViewAdapter extends RecyclerView.Adapter<Event_Recycl
             eventDate_tv = itemView.findViewById(R.id.eventDate);
             eventPrice_tv = itemView.findViewById(R.id.eventPrice);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (recyclerViewInterface != null) {
+                        int pos = getAdapterPosition();
 
+                        if (pos != RecyclerView.NO_POSITION) {
+                            recyclerViewInterface.onItemClick(pos);
+                        }
+                    }
+                }
+            });
         }
     }
 
