@@ -46,7 +46,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class ExploreFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, RecyclerViewInterface {
+public class ExploreFragment extends Fragment implements
+        OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, RecyclerViewInterface,
+        GoogleMap.OnMarkerClickListener {
+
     private View rootView;
     RecyclerView recyclerView;
     GoogleMap googleMap;
@@ -296,8 +299,9 @@ public class ExploreFragment extends Fragment implements OnMapReadyCallback, Goo
         // Set up marker info window adapter
         googleMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
 
-        // Set up on info window click listener
+        // Set up on info window & marker click listener
         googleMap.setOnInfoWindowClickListener(this);
+        googleMap.setOnMarkerClickListener(this);
 
         // Retrieve event data from Firestore
         db.collection("events")
@@ -332,7 +336,26 @@ public class ExploreFragment extends Fragment implements OnMapReadyCallback, Goo
                 });
     }
     public void onInfoWindowClick(Marker marker) {
-        // Handle info window click
+        // Retrieve the title of the clicked marker
+        String markerTitle = marker.getTitle();
+
+        // Find the corresponding event in the eventModels list
+        EventModel selectedEvent = null;
+        for (EventModel event : eventModels) {
+            if (event.getEventGenre().equals(markerTitle)) {
+                selectedEvent = event;
+                break;
+            }
+        }
+
+        // If a corresponding event is found, launch the EventInfoActivity
+        if (selectedEvent != null) {
+            // Find the position of the selected event in the eventModels list
+            int position = eventModels.indexOf(selectedEvent);
+
+            // Call the onItemClick method to launch the EventInfoActivity
+            onItemClick(position);
+        }
     }
     private void updateMapMarkers(ArrayList<EventModel> events) {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -393,6 +416,34 @@ public class ExploreFragment extends Fragment implements OnMapReadyCallback, Goo
 
 
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onMarkerClick(@NonNull Marker marker) {
+        // Show the info window for the clicked marker
+        marker.showInfoWindow();
+
+        // Retrieve the title of the clicked marker
+        String markerTitle = marker.getTitle();
+
+        // Find the corresponding event in the eventModels list
+        EventModel selectedEvent = null;
+        for (EventModel event : eventModels) {
+            if (event.getEventGenre().equals(markerTitle)) {
+                selectedEvent = event;
+                break;
+            }
+        }
+
+        // Update the RecyclerView to display only the selected event
+        if (selectedEvent != null) {
+            ArrayList<EventModel> selectedEventList = new ArrayList<>();
+            selectedEventList.add(selectedEvent);
+            adapter.setFilteredList(selectedEventList);
+        }
+
+        // Return true to consume the event and prevent the default behavior
+        return true;
     }
 
 
