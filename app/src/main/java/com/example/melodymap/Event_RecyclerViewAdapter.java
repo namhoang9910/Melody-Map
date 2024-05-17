@@ -1,6 +1,7 @@
 package com.example.melodymap;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ public class Event_RecyclerViewAdapter extends RecyclerView.Adapter<Event_Recycl
     Context context;
     ArrayList<EventModel> eventModels;
 
+
     public Event_RecyclerViewAdapter(Context context, ArrayList<EventModel> eventModels,
                                      RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
@@ -42,7 +44,6 @@ public class Event_RecyclerViewAdapter extends RecyclerView.Adapter<Event_Recycl
         // Inflate layout = giving a look to each row
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.recycler_view_row, parent, false);
-
         return new Event_RecyclerViewAdapter.MyViewHolder(view, recyclerViewInterface);
     }
 

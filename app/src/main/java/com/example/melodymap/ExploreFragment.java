@@ -45,6 +45,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class ExploreFragment extends Fragment implements
         OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, RecyclerViewInterface,
@@ -141,6 +143,7 @@ public class ExploreFragment extends Fragment implements
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
+                                String eventId = document.getString("eventId");
                                 String eventName = document.getString("eventName");
                                 Timestamp eventDate = document.getTimestamp("eventDate");
                                 String eventDescription = document.getString("eventDescription");
@@ -161,13 +164,24 @@ public class ExploreFragment extends Fragment implements
                                 double eventLong = eventLongDouble != null ? eventLongDouble : 0.0;
 
                                 // Create an EventModel object and add it to the list
-                                EventModel event1 = new EventModel(eventName, eventDate, eventDescription,
+                                EventModel event1 = new EventModel(eventId, eventName, eventDate, eventDescription,
                                         eventHost, eventGenre, eventPrice, imageUrl, eventLocation);
                                 eventModels.add(event1);
                             }
+
                             // Data from firebase doesn't exist outside onComplete
                             recyclerView = rootView.findViewById(R.id.eventRecyclerView);
                             adapter = new Event_RecyclerViewAdapter(getActivity(), eventModels, fragment);
+
+                            // Sort events by date
+                            Collections.sort(eventModels, new Comparator<EventModel>() {
+                                @Override
+                                public int compare(EventModel e1, EventModel e2) {
+                                    return e1.getEventDate().compareTo(e2.getEventDate());
+                                }
+                            });
+                            adapter.notifyDataSetChanged();
+
                             recyclerView.setAdapter(adapter);
                             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                 @Override
@@ -406,6 +420,7 @@ public class ExploreFragment extends Fragment implements
         Intent intent = new Intent(getActivity(), EventInfoActivity.class);
 
         // Pass necessary data to the activity using Intent extras
+        intent.putExtra("EVENT_ID", eventModels.get(position).getEventId());
         intent.putExtra("EVENT_NAME", eventModels.get(position).getEventName());
         intent.putExtra("EVENT_PRICE", eventModels.get(position).getEventPrice());
         intent.putExtra("IMAGE_URL", eventModels.get(position).getImageUrl());

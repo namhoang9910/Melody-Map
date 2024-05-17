@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_screen_gradient"
+    android:background="@drawable/background_gradient_rouge_to_black"
     app:layout_constraintDimensionRatio="H, 9:1"
     tools:context=".MainActivity">
 

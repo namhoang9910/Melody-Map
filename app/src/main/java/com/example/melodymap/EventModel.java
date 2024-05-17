@@ -2,16 +2,19 @@ package com.example.melodymap;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
+import java.util.Date;
+
 
 public class EventModel {
-    String eventName, eventDescription, eventHost, eventGenre, imageUrl;
+    String eventId, eventName, eventDescription, eventHost, eventGenre, imageUrl;
     Timestamp eventDate;
     double eventPrice, eventLat, eventLong;
     GeoPoint eventGeoPoint;
 
 
-    public EventModel(String eventName, Timestamp eventDate, String eventDescription, String eventHost, String eventGenre,
+    public EventModel(String eventId, String eventName, Timestamp eventDate, String eventDescription, String eventHost, String eventGenre,
                       double eventPrice, String imageUrl, GeoPoint eventGeoPoint) {
+        this.eventId = eventId;
         this.eventName = eventName;
         this.eventDate = eventDate;
         this.eventDescription = eventDescription;
@@ -70,4 +73,12 @@ public class EventModel {
         }
     }
 
+    public String getEventId() {
+        return eventId;
+    }
+
+    public boolean isPastEvent() {
+        Timestamp currentTime = new Timestamp(new java.util.Date());
+        return eventDate.compareTo(currentTime) < 0;
+    }
 }

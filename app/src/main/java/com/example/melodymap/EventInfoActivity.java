@@ -1,7 +1,10 @@
 package com.example.melodymap;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,12 +20,15 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class EventInfoActivity extends AppCompatActivity {
     private FirebaseFirestore db;
@@ -50,7 +56,8 @@ public class EventInfoActivity extends AppCompatActivity {
         // Format & load date
         long eventDateMillis = getIntent().getLongExtra("EVENT_DATE", 0);
         Date date = new Date(eventDateMillis);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd '@' HH:mm");// Define the output date format
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy @ hh:mm a", Locale.ENGLISH);
+
         String dateString = dateFormat.format(date);
         TextView eventDateTextView = findViewById(R.id.INFO_eventDate);
         eventDateTextView.setText(dateString);
@@ -101,15 +108,61 @@ public class EventInfoActivity extends AppCompatActivity {
         imInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Add to My Events
+                String eventId = getIntent().getStringExtra("EVENT_ID"); // Assuming you have a way to retrieve the unique ID of the event
+                addToMyEvents(eventId);
                 // Close the activity after done
                 finish();
-                Toast.makeText(EventInfoActivity.this, "Event added", Toast.LENGTH_SHORT).show();
             }
         });
 
         // Fetch venue address and display it
         fetchVenueAddressAndDisplay(eventHost);
     }
+
+    private void addToMyEvents(String eventId) {
+        // Get the current user ID
+        //String userId = getCurrentUserId();
+        String userId = "user1";
+
+        db.collection("users")
+                .document(userId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            ArrayList<String> eventList = (ArrayList<String>) document.get("eventList");
+                            if (eventList != null && eventList.contains(eventId)) {
+                                Log.d(TAG, "Already Registered");
+                                Toast.makeText(EventInfoActivity.this, "Already Registered", Toast.LENGTH_SHORT).show();
+                            } else {
+                                // Add the event ID to the user's eventList
+                                db.collection("users")
+                                        .document(userId)
+                                        .update("eventList", FieldValue.arrayUnion(eventId))
+                                        .addOnSuccessListener(aVoid -> {
+                                            // Event ID added to user's eventList successfully
+                                            Toast.makeText(EventInfoActivity.this, "Event added to My Events", Toast.LENGTH_SHORT).show();
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            // Error occurred while adding event ID to user's eventList
+                                            Toast.makeText(EventInfoActivity.this, "Failed to add event to My Events", Toast.LENGTH_SHORT).show();
+                                            Log.e(TAG, "Error adding event to My Events", e);
+                                        });
+                            }
+                        } else {
+                            Log.d(TAG, "No such document");
+                            Toast.makeText(EventInfoActivity.this, "User document does not exist", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                        Toast.makeText(EventInfoActivity.this, "Failed to fetch user data", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
 
     private void fetchVenueAddressAndDisplay(String eventHost) {
         // Query to fetch venue address from Firestore based on venue name
