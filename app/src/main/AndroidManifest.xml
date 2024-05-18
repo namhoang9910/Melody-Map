@@ -18,16 +18,20 @@
         android:theme="@style/Theme.MelodyMap"
         tools:targetApi="31">
         <activity
+            android:name=".LoginActivity"
+            android:exported="false"
+            android:label="@string/title_activity_login" />
+        <activity android:name=".RegularUserSignUpActivity" />
+        <activity android:name=".VenueSignUpActivity" />
+        <activity
             android:name=".SplashActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".EventInfoActivity"
             android:exported="false" />
@@ -42,8 +46,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false" />
     </application>
 
 </manifest>

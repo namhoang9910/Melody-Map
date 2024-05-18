@@ -228,8 +228,11 @@ public class ExploreFragment extends Fragment implements
             boolean isFree = freeEventsButton.isSelected() && event.getEventPrice() == 0.0;
             boolean headingMatchesSearch = event.getEventName().toLowerCase().contains(text.toLowerCase());
             boolean genreMatchesSearch = event.getEventGenre().toLowerCase().contains(text.toLowerCase());
+            boolean descriptionMatchesSearch = event.getEventDescription().toLowerCase().contains(text.toLowerCase());
 
-            if ((isNearby || !nearByButton.isSelected()) && (isFree || !freeEventsButton.isSelected()) && (headingMatchesSearch || genreMatchesSearch)) {
+
+            if ((isNearby || !nearByButton.isSelected()) && (isFree || !freeEventsButton.isSelected()) &&
+                    (headingMatchesSearch || genreMatchesSearch || descriptionMatchesSearch)) {
                 filteredList.add(event);
             }
         }

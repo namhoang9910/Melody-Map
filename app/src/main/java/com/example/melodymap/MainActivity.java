@@ -1,23 +1,20 @@
 package com.example.melodymap;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import com.example.melodymap.R;
 
 import com.example.melodymap.databinding.ActivityMainBinding;
 import com.karumi.dexter.Dexter;
@@ -27,10 +24,8 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
-
 public class MainActivity extends AppCompatActivity {
     static final String PREFS_NAME = "MyPrefsFile";
-    static final String PERMISSION_GRANTED_KEY = "isPermissionGranted";
     boolean isPermissionGranted = false;
     ActivityMainBinding binding;
 
@@ -40,8 +35,17 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        checkMyPermission();
+        //checkMyPermission();
 
+        // Check sign-in status and redirect to LoginActivity if not signed in
+        if (!isUserSignedIn()) {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+        // Set the initial fragment if the user is signed in
         replaceFragment(new ExploreFragment());
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -74,6 +78,13 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Check permission only after user has signed in
+        checkMyPermission();
+    }
+
     private void checkMyPermission() {
         Dexter.withContext(MainActivity.this).withPermission(android.Manifest.permission.ACCESS_FINE_LOCATION).withListener(new PermissionListener() {
             @Override
@@ -96,5 +107,10 @@ public class MainActivity extends AppCompatActivity {
                 permissionToken.continuePermissionRequest();
             }
         }).check();
+    }
+
+    private boolean isUserSignedIn() {
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        return preferences.getBoolean("isUserSignedIn", false);
     }
 }

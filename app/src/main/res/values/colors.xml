@@ -9,6 +9,7 @@
     <color name="brightRed">#FFF93f19</color>
     <color name="darkGrey">#FF202020</color>
     <color name="mediumDarkGrey">#FF343434</color>
+    <color name="mediumMidGrey">#FF535353</color>
     <color name="mediumGrey">#FF838383</color>
     <color name="lightGrey">#FF999999</color>
 </resources>
