@@ -559,13 +559,8 @@ public class ExploreFragment extends Fragment implements
         blackCirclePaint.setStyle(Paint.Style.FILL);
         canvas.drawCircle(width / 2f + 25, height / 2f + 25, dotRadius, blackCirclePaint);
 
-
-
         // Create a BitmapDescriptor from the custom bitmap and return it
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
-
-
-
 
 }
