@@ -11,9 +11,10 @@ public class Venue {
     private String openingHours;
     private String phoneNumber;
 
-    public Venue() {}
+    public Venue() {
+    }
 
-    public Venue(String email, String genre, GeoPoint location, String name, String openingHours, String ownerName, String phoneNumber) {
+    public Venue(String email, String genre, GeoPoint location, String name, String openingHours, String phoneNumber) {
         this.email = email;
         this.genre = genre;
         this.location = location;
@@ -49,6 +50,7 @@ public class Venue {
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -56,6 +58,7 @@ public class Venue {
     public String getOpeningHours() {
         return openingHours;
     }
+
     public void setOpeningHours(String openingHours) {
         this.openingHours = openingHours;
     }
@@ -64,6 +67,7 @@ public class Venue {
     public String getPhoneNumber() {
         return phoneNumber;
     }
+
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }

@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.play.services.maps)
     implementation(libs.firebase.database)
     implementation(libs.firebase.firestore)
+    implementation("com.google.firebase:firebase-auth-ktx:23.0.0")
     //implementation(libs.play.services.location)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

@@ -22,47 +22,57 @@
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white" />
 
-    <Button
-        android:id="@+id/login"
+    <EditText
+        android:id="@+id/genre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:hint="Genre"
+        android:inputType="text"
         android:textColor="@android:color/white"
-        android:background="@drawable/filter_button_background"
-        android:layout_marginBottom="16dp" />
+        android:textColorHint="@android:color/white" />
+
+    <EditText
+        android:id="@+id/location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Location"
+        android:inputType="text"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white" />
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Name"
+        android:inputType="text"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white" />
+
+    <EditText
+        android:id="@+id/openingHours"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Opening Hours"
+        android:inputType="text"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white" />
+
+    <EditText
+        android:id="@+id/phoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Phone Number"
+        android:inputType="phone"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white" />
 
     <Button
-        android:id="@+id/signupRegularUser"
+        android:id="@+id/signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sign Up as Regular User"
-        android:textColor="@android:color/white"
-        android:background="@drawable/filter_button_background"
-        android:layout_marginBottom="16dp"/>
-
-    <Button
-        android:id="@+id/signupVenue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Sign Up as Venue"
+        android:text="Sign Up"
         android:textColor="@android:color/white"
         android:background="@drawable/filter_button_background" />
-
-    <TextView
-        android:id="@+id/userInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textColor="@android:color/white"
-        android:visibility="gone" />
-
-    <Button
-        android:id="@+id/signOut"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Sign Out"
-        android:textColor="@android:color/white"
-        android:background="@drawable/filter_button_background"
-        android:visibility="gone" />
 
 </LinearLayout>
