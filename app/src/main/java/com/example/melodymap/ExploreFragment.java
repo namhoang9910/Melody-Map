@@ -373,7 +373,7 @@ public class ExploreFragment extends Fragment implements
                             LatLngBounds bounds = builder.build();
 
                             // Set padding for the bounds (optional)
-                            int padding = 100; // Padding in pixels
+                            int padding = 100; // in pixels
                             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding);
 
                             updateMapMarkers(eventModels);
