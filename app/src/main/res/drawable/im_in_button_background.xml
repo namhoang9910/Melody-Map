@@ -1,9 +1,0 @@
-<!-- filter_button_background.xml -->
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Button background when pressed -->
-    <item android:state_pressed="true" android:drawable="@drawable/im_in_button_selected"/>
-    <!-- Button background when selected -->
-    <item android:state_selected="true" android:drawable="@drawable/im_in_button_selected"/>
-    <!-- Default button background -->
-    <item android:drawable="@drawable/im_in_button_unselected"/>
-</selector>
