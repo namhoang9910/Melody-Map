@@ -10,10 +10,12 @@ public class EventModel {
     Timestamp eventDate;
     double eventPrice, eventLat, eventLong;
     GeoPoint eventGeoPoint;
+    private int currentPosition;
+
 
 
     public EventModel(String eventId, String eventName, Timestamp eventDate, String eventDescription, String eventHost, String eventGenre,
-                      double eventPrice, String imageUrl, GeoPoint eventGeoPoint) {
+                      double eventPrice, String imageUrl, GeoPoint eventGeoPoint, int currentPosition) {
         this.eventId = eventId;
         this.eventName = eventName;
         this.eventDate = eventDate;
@@ -23,6 +25,8 @@ public class EventModel {
         this.eventPrice = eventPrice;
         this.imageUrl = imageUrl;
         this.eventGeoPoint = eventGeoPoint;
+        // Initialize other fields...
+        this.currentPosition = currentPosition;
     }
 
     public String getEventName() {
@@ -80,5 +84,13 @@ public class EventModel {
     public boolean isPastEvent() {
         Timestamp currentTime = new Timestamp(new java.util.Date());
         return eventDate.compareTo(currentTime) < 0;
+    }
+
+    public void setCurrentPosition(int currentPosition) {
+        this.currentPosition = currentPosition;
+    }
+
+    public int getCurrentPosition() {
+        return currentPosition;
     }
 }

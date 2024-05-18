@@ -38,6 +38,10 @@ public class Event_RecyclerViewAdapter extends RecyclerView.Adapter<Event_Recycl
         this.eventModels = filteredList;
         notifyDataSetChanged();
     }
+
+    public ArrayList<EventModel> getFilteredList() {
+        return eventModels;
+    }
     @NonNull
     @Override
     public Event_RecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -109,6 +113,8 @@ public class Event_RecyclerViewAdapter extends RecyclerView.Adapter<Event_Recycl
             });
         }
     }
+
+
 
     public void clearList() {
         eventModels.clear();

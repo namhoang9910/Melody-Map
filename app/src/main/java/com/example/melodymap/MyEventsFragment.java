@@ -163,6 +163,7 @@ public class MyEventsFragment extends Fragment implements RecyclerViewInterface 
                         eventModels.clear();
                         EventModel upcomingEvent = null;
                         Timestamp currentTime = new Timestamp(new java.util.Date());
+                        int eventCount = 0;
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String eventId = document.getString("eventId");
                             String eventName = document.getString("eventName");
@@ -178,8 +179,9 @@ public class MyEventsFragment extends Fragment implements RecyclerViewInterface 
                             double eventPrice = eventPriceDouble != null ? eventPriceDouble : 0.0;
 
                             EventModel event = new EventModel(eventId, eventName, eventDate, eventDescription,
-                                    eventHost, eventGenre, eventPrice, imageUrl, eventLocation);
+                                    eventHost, eventGenre, eventPrice, imageUrl, eventLocation, eventCount);
                             eventModels.add(event);
+                            eventCount++;
 
                             // Find the next upcoming event after the current time
                             if (eventDate != null && eventDate.compareTo(currentTime) > 0) {

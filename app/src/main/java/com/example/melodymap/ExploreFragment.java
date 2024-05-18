@@ -142,6 +142,7 @@ public class ExploreFragment extends Fragment implements
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            int eventCount = 0;
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String eventId = document.getString("eventId");
                                 String eventName = document.getString("eventName");
@@ -165,8 +166,9 @@ public class ExploreFragment extends Fragment implements
 
                                 // Create an EventModel object and add it to the list
                                 EventModel event1 = new EventModel(eventId, eventName, eventDate, eventDescription,
-                                        eventHost, eventGenre, eventPrice, imageUrl, eventLocation);
+                                        eventHost, eventGenre, eventPrice, imageUrl, eventLocation, eventCount);
                                 eventModels.add(event1);
+                                eventCount++;
                             }
 
                             // Data from firebase doesn't exist outside onComplete
@@ -197,6 +199,15 @@ public class ExploreFragment extends Fragment implements
 
                             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+                            // Update the currentPosition for each event in the filtered list
+                            for (int i = 0; i < eventModels.size(); i++) {
+                                eventModels.get(i).setCurrentPosition(eventModels.indexOf(eventModels.get(i)));
+                            }
+
+                            // Set the filtered list and update map markers
+                            adapter.setFilteredList(eventModels);
+                            updateMapMarkers(eventModels);
+
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
@@ -211,6 +222,11 @@ public class ExploreFragment extends Fragment implements
         ArrayList<EventModel> filteredList = new ArrayList<>();
         for (EventModel event : eventModels) {
             filteredList.add(event);
+        }
+
+        // Update the currentPosition for each event in the filtered list
+        for (int i = 0; i < filteredList.size(); i++) {
+            filteredList.get(i).setCurrentPosition(eventModels.indexOf(filteredList.get(i)));
         }
 
         if (!filteredList.isEmpty()) {
@@ -237,6 +253,11 @@ public class ExploreFragment extends Fragment implements
             }
         }
 
+        // Update the currentPosition for each event in the filtered list
+        for (int i = 0; i < filteredList.size(); i++) {
+            filteredList.get(i).setCurrentPosition(eventModels.indexOf(filteredList.get(i)));
+        }
+
         if (!filteredList.isEmpty()) {
             adapter.setFilteredList(filteredList);
             updateMapMarkers(filteredList);
@@ -252,9 +273,17 @@ public class ExploreFragment extends Fragment implements
             }
         }
 
+        // Update the currentPosition for each event in the filtered list
+        for (int i = 0; i < filteredList.size(); i++) {
+            filteredList.get(i).setCurrentPosition(eventModels.indexOf(filteredList.get(i)));
+        }
+
         if (!filteredList.isEmpty()) {
             adapter.setFilteredList(filteredList);
             updateMapMarkers(filteredList);
+        } else {
+            adapter.setFilteredList(new ArrayList<>());
+            updateMapMarkers(new ArrayList<>());
         }
     }
 
@@ -269,6 +298,11 @@ public class ExploreFragment extends Fragment implements
             if (distance <= NEARBY_DISTANCE_DIAMETER_KM) {
                 filteredList.add(event);
             }
+        }
+
+        // Update the currentPosition for each event in the filtered list
+        for (int i = 0; i < filteredList.size(); i++) {
+            filteredList.get(i).setCurrentPosition(eventModels.indexOf(filteredList.get(i)));
         }
 
         if (!filteredList.isEmpty()) {
@@ -367,11 +401,11 @@ public class ExploreFragment extends Fragment implements
 
         // If a corresponding event is found, launch the EventInfoActivity
         if (selectedEvent != null) {
-            // Find the position of the selected event in the eventModels list
-            int position = eventModels.indexOf(selectedEvent);
+            // Get the original position of the selected event
+            int originalPosition = selectedEvent.getCurrentPosition();
 
             // Call the onItemClick method to launch the EventInfoActivity
-            onItemClick(position);
+            onItemClick(originalPosition);
         }
     }
     private void updateMapMarkers(ArrayList<EventModel> events) {
@@ -419,19 +453,19 @@ public class ExploreFragment extends Fragment implements
 
     @Override
     public void onItemClick(int position) {
-        // When item from RecyclerViewInterface is clicked, show event info
         Intent intent = new Intent(getActivity(), EventInfoActivity.class);
 
-        // Pass necessary data to the activity using Intent extras
-        intent.putExtra("EVENT_ID", eventModels.get(position).getEventId());
-        intent.putExtra("EVENT_NAME", eventModels.get(position).getEventName());
-        intent.putExtra("EVENT_PRICE", eventModels.get(position).getEventPrice());
-        intent.putExtra("IMAGE_URL", eventModels.get(position).getImageUrl());
-        intent.putExtra("EVENT_HOST", eventModels.get(position).getEventHost());
-        intent.putExtra("EVENT_DATE", eventModels.get(position).getEventDate());
-        intent.putExtra("EVENT_GENRE", eventModels.get(position).getEventGenre());
-        intent.putExtra("EVENT_DESCRIPTION", eventModels.get(position).getEventDescription());
+        // Use currentPosition to reference the original event
+        EventModel selectedEvent = eventModels.get(adapter.getFilteredList().get(position).getCurrentPosition());
 
+        intent.putExtra("EVENT_ID", selectedEvent.getEventId());
+        intent.putExtra("EVENT_NAME", selectedEvent.getEventName());
+        intent.putExtra("EVENT_PRICE", selectedEvent.getEventPrice());
+        intent.putExtra("IMAGE_URL", selectedEvent.getImageUrl());
+        intent.putExtra("EVENT_HOST", selectedEvent.getEventHost());
+        intent.putExtra("EVENT_DATE", selectedEvent.getEventDate());
+        intent.putExtra("EVENT_GENRE", selectedEvent.getEventGenre());
+        intent.putExtra("EVENT_DESCRIPTION", selectedEvent.getEventDescription());
 
         startActivity(intent);
     }
@@ -452,6 +486,7 @@ public class ExploreFragment extends Fragment implements
                 break;
             }
         }
+
 
         // Update the RecyclerView to display only the selected event
         if (selectedEvent != null) {
