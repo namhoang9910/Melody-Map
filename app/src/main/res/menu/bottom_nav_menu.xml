@@ -11,7 +11,7 @@
     <item
         android:id="@+id/inbox"
         android:icon="@drawable/round_message_24"
-        android:title="Inbox"/>
+        android:title="Ask Me" />
     <item
         android:id="@+id/account"
         android:icon="@drawable/round_account_circle_24"

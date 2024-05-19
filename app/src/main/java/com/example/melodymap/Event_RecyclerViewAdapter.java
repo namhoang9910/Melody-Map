@@ -1,8 +1,6 @@
 package com.example.melodymap;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.Timestamp;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,7 +43,7 @@ public class Event_RecyclerViewAdapter extends RecyclerView.Adapter<Event_Recycl
     public Event_RecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Inflate layout = giving a look to each row
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.recycler_view_row, parent, false);
+        View view = inflater.inflate(R.layout.event_recycler_view_row, parent, false);
         return new Event_RecyclerViewAdapter.MyViewHolder(view, recyclerViewInterface);
     }
 

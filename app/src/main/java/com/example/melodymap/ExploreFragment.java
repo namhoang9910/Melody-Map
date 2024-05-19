@@ -386,28 +386,11 @@ public class ExploreFragment extends Fragment implements
                     }
                 });
     }
+    @Override
     public void onInfoWindowClick(Marker marker) {
-        // Retrieve the title of the clicked marker
-        String markerTitle = marker.getTitle();
-
-        // Find the corresponding event in the eventModels list
-        EventModel selectedEvent = null;
-        for (EventModel event : eventModels) {
-            if (event.getEventGenre().equals(markerTitle)) {
-                selectedEvent = event;
-                break;
-            }
-        }
-
-        // If a corresponding event is found, launch the EventInfoActivity
-        if (selectedEvent != null) {
-            // Get the original position of the selected event
-            int originalPosition = selectedEvent.getCurrentPosition();
-
-            // Call the onItemClick method to launch the EventInfoActivity
-            onItemClick(originalPosition);
-        }
     }
+
+
     private void updateMapMarkers(ArrayList<EventModel> events) {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         builder.include(MELBOURNE_CBD); // Include Melbourne CBD in bounds
@@ -453,6 +436,12 @@ public class ExploreFragment extends Fragment implements
 
     @Override
     public void onItemClick(int position) {
+
+        if (position < 0 || position >= eventModels.size()) {
+            Log.e(TAG, "Invalid position in onItemClick: " + position);
+            return;
+        }
+
         Intent intent = new Intent(getActivity(), EventInfoActivity.class);
 
         // Use currentPosition to reference the original event

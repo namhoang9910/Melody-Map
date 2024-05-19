@@ -4,4 +4,9 @@
         <item name="android:textColorHint">@color/rouge</item>
         <item name="android:editTextColor">@color/black</item>
     </style>
+
+    <style name="InboxSearchView" parent="Widget.AppCompat.SearchView">
+        <item name="android:textColorHint">@color/lightGrey</item>
+        <item name="android:editTextColor">@color/black</item>
+    </style>
 </resources>

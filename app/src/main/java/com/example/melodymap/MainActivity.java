@@ -35,8 +35,6 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        //checkMyPermission();
-
         // Check sign-in status and redirect to LoginActivity if not signed in
         if (!isUserSignedIn()) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -81,8 +79,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // Check permission only after user has signed in
-        checkMyPermission();
+        // Check permission only if it has not been granted yet
+        if (!isPermissionGranted()) {
+            checkMyPermission();
+        }
     }
 
     private void checkMyPermission() {
@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
                 Toast.makeText(MainActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
                 isPermissionGranted = true;
+                savePermissionStatus(true);
             }
 
             @Override
@@ -107,6 +108,18 @@ public class MainActivity extends AppCompatActivity {
                 permissionToken.continuePermissionRequest();
             }
         }).check();
+    }
+
+    private boolean isPermissionGranted() {
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        return preferences.getBoolean("isPermissionGranted", false);
+    }
+
+    private void savePermissionStatus(boolean isGranted) {
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("isPermissionGranted", isGranted);
+        editor.apply();
     }
 
     private boolean isUserSignedIn() {

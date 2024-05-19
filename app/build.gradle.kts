@@ -22,6 +22,7 @@ android {
         val properties = Properties()
         properties.load(project.rootProject.file("local.properties").inputStream())
         buildConfigField("String", "MAPS_API_KEY", "\"${properties.getProperty(" MAPS_API_KEY ")}\"")
+        buildConfigField("String", "AI_API_KEY", "\"${properties.getProperty("AI_API_KEY")}\"")
     }
 
     buildTypes {
@@ -63,15 +64,22 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
     androidTestImplementation(libs.espresso.core)
     implementation("com.google.firebase:firebase-auth-ktx:23.0.0")
-    //implementation(libs.play.services.location)
+    // FirebaseUI for Cloud Firestore
+    implementation("com.firebaseui:firebase-ui-firestore:8.0.2")
+    implementation("com.google.android.material:material:1.4.0")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    //implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.karumi:dexter:6.2.3")
     implementation("com.squareup.picasso:picasso:2.71828")
     implementation("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+
+
+    // AI dependencies
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
 
 }
 
